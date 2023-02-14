@@ -42,7 +42,7 @@ TANGGAL=$(date +"%F%S")
 
 # Specify Final Zip Name
 ZIPNAME=Forza
-FINAL_ZIP=${ZIPNAME}-${VERSION}-${DEVICE}-KERNEL-${TANGGAL}.zip
+FINAL_ZIP=${ZIPNAME}-kernel-${DEVICE}-${TANGGAL}.zip
 
 ##----------------------------------------------------------##
 # Specify compiler.
@@ -161,7 +161,7 @@ function exports() {
         
         # KBUILD HOST and USER
         export KBUILD_BUILD_HOST=Linux
-        export KBUILD_BUILD_USER="Lopster"
+        export KBUILD_BUILD_USER="Lop"
         
         # CI
         if [ "$CI" ]
