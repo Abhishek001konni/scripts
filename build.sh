@@ -38,6 +38,10 @@ REPO_LINK=$(git remote get-url --push origin)
 COMMIT_HEAD=$(git log --oneline -1)
 COMMIT_LINK="${REPO_LINK}/commit/$(git log --oneline --no-abbrev-commit -1 | cut -d ' ' -f 1)"
 
+echo $REPO_LINK
+echo $COMMIT_LINK
+echo $COMMIT_HEAD
+
 # Date and Time
 DATE=$(TZ=Asia/Kolkata date +"%Y%m%d-%T")
 TANGGAL=$(date +"%F%S")
