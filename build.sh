@@ -34,7 +34,9 @@ VERBOSE=0
 # Kernel Version
 KERVER=$(make kernelversion)
 
+REPO_LINK=$(git remote get-url --push origin)
 COMMIT_HEAD=$(git log --oneline -1)
+COMMIT_LINK="${REPO_LINK}/commit/$(git log --oneline --no-abbrev-commit -1 | cut -d ' ' -f 1)"
 
 # Date and Time
 DATE=$(TZ=Asia/Kolkata date +"%Y%m%d-%T")
@@ -176,7 +178,8 @@ function exports() {
 		  export KBUILD_BUILD_VERSION=${DRONE_BUILD_NUMBER}
 		  export CI_BRANCH=${DRONE_BRANCH}
            fi
-		   
+        else
+          export CI_BRANCH=$(git rev-parse --abbrev-ref HEAD)   
         fi
 	export PROCS=$(nproc --all)
 	export DISTRO=$(source /etc/os-release && echo "${NAME}")
@@ -224,7 +227,7 @@ function configs() {
 function compile() {
 START=$(date +"%s")
 	# Push Notification
-	post_msg "<b>$KBUILD_BUILD_VERSION CI Build Triggered</b>%0A<b>Docker OS: </b><code>$DISTRO</code>%0A<b>Kernel Version : </b><code>$KERVER</code>%0A<b>Date : </b><code>$(TZ=Asia/Kolkata date)</code>%0A<b>Device : </b><code>$MODEL [$DEVICE]</code>%0A<b>Pipeline Host : </b><code>$KBUILD_BUILD_HOST</code>%0A<b>Host Core Count : </b><code>$PROCS</code>%0A<b>Compiler Used : </b><code>$KBUILD_COMPILER_STRING</code>%0A<b>Linker : </b><code>$LINKER</code>%0a<b>Branch : </b><code>$CI_BRANCH</code>%0A<b>Top Commit : </b><a href='$DRONE_COMMIT_LINK'>$COMMIT_HEAD</a>"
+	post_msg "<b>$KBUILD_BUILD_VERSION CI Build Triggered</b>%0A<b>Docker OS: </b><code>$DISTRO</code>%0A<b>Kernel Version : </b><code>$KERVER</code>%0A<b>Date : </b><code>$(TZ=Asia/Kolkata date)</code>%0A<b>Device : </b><code>$MODEL [$DEVICE]</code>%0A<b>Pipeline Host : </b><code>$KBUILD_BUILD_HOST</code>%0A<b>Host Core Count : </b><code>$PROCS</code>%0A<b>Compiler Used : </b><code>$KBUILD_COMPILER_STRING</code>%0A<b>Linker : </b><code>$LINKER</code>%0a<b>Branch : </b><code>$CI_BRANCH</code>%0A<b>Top Commit : </b><a href='$COMMIT_LINK'>$COMMIT_HEAD</a>"
 	
 	# Compile
 	make O=out ${DEFCONFIG}
